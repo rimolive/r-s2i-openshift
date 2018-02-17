@@ -23,7 +23,7 @@ echo "---> Installing application source..."
 cp -Rf /tmp/src/. ./
 
 # TODO: Add build steps for your application, eg npm install, bundle install, pip install, etc.
-if[ -f .RLibraries ]; then
+if [ -f .RLibraries ]; then
   echo "---> Building application from source..."
   for lib in $(cat .RLibraries); do
     echo "---> Installing library $lib..."

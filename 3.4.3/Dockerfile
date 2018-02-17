@@ -24,13 +24,16 @@ LABEL summary="$SUMMARY" \
       release="1" \
       maintainer="Ricardo M. Oliveira <rmartine@redhat.com>"
 
-RUN yum install -y epel-release \
-    yum install -y R \
-    yum clean all
+RUN yum install -y epel-release && \
+    yum install -y R && \
+    yum clean all && \
+    rm -rf /var/cache/yum && \
+    echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /usr/lib64/R/library/base/R/Rprofile
 
 COPY ./s2i/bin/ $STI_SCRIPTS_PATH
 
-RUN chown -R 1001:1001 /opt/app-root
+RUN chown -R 1001:1001 /opt/app-root && \
+    chown -R 1001:1001 /usr/lib64/R/library
 
 USER 1001
 
