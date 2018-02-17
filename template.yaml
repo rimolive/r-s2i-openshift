@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  name: r
+  annotations:
+    openshift.io/display-name: R
+spec:
+  tags:
+    - name: latest
+      annotations:
+        openshift.io/display-name: R (latest)
+        openshift.io/provider-display-name: Red Hat, Inc.
+        description: Build and run R applications on CentOS 7. For more information about this builder image, including OpenShift applications, see https://github.com/rimolive/r-s2i-openshift/blob/master/README.md
+        iconClass: icon-shadowman
+        tags: builder,r
+        supports: r
+        sampleRepo: https://github.com/rimolive/r-openshift-ex.git
+      from:
+        kind: ImageStreamTag
+        name: 3.4.3
+    - name: 3.4.3
+      annotations:
+        openshift.io/display-name: R 3.4.3
+        openshift.io/provider-display-name: Red Hat, Inc.
+        description: Build and run R 3.4.3 applications on CentOS 7. For more information about this builder image, including OpenShift applications, see https://github.com/rimolive/r-s2i-openshift/blob/master/README.md
+        iconClass: icon-shadowman
+        tags: builder,r
+        supports: r:3.4.3,r:3.4,r
+        sampleRepo: https://github.com/rimolive/r-openshift-ex.git
+      from:
+        kind: DockerImage
+        name: rimolive/r-34-centos7:latest
