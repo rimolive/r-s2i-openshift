@@ -15,10 +15,10 @@ Versions
 ---------------
 R versions currently provided are:
 * [r-3.4](3.4.3)
+* [r-3.5](3.5.0)
 
 CentOS versions currently supported are:
 * CentOS7
-
 
 Installation
 ---------------
@@ -45,6 +45,9 @@ Usage
 
 For information about usage of Dockerfile for R 3.4.3,
 see [usage documentation](3.4.3/README.md).
+
+For information about usage of Dockerfile for R 3.5.0,
+see [usage documentation](3.5.0/README.md).
 
 
 Test
