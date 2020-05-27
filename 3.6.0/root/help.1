@@ -1,0 +1,146 @@
+.TH Creating a basic S2I builder image
+.SH Getting started
+.SS Files and Directories
+.TS
+allbox;
+l l l 
+l l l .
+\fB\fCFile\fR	\fB\fCRequired?\fR	\fB\fCDescription\fR
+Dockerfile	Yes	Defines the base builder image
+s2i/bin/assemble	Yes	T{
+Script that builds the application
+T}
+s2i/bin/usage	No	T{
+Script that prints the usage of the builder
+T}
+s2i/bin/run	Yes	T{
+Script that runs the application
+T}
+s2i/bin/save\-artifacts	No	T{
+Script for incremental builds that saves the built artifacts
+T}
+test/run	No	T{
+Test script for the builder image
+T}
+test/test\-app	Yes	Test application source code
+.TE
+
+.SS Dockerfile
+.PP
+Create a \fIDockerfile\fP that installs all of the necessary tools and libraries that are needed to build and run our application.  This file will also handle copying the s2i scripts into the created image.
+
+.SS S2I scripts
+.SS assemble
+.PP
+Create an \fIassemble\fP script that will build our application, e.g.:
+\- build python modules
+\- bundle install ruby gems
+\- setup application specific configuration
+
+.PP
+The script can also specify a way to restore any saved artifacts from the previous image.
+
+.SS run
+.PP
+Create a \fIrun\fP script that will start the application.
+
+.SS save\-artifacts (optional)
+.PP
+Create a \fIsave\-artifacts\fP script which allows a new build to reuse content from a previous version of the application image.
+
+.SS usage (optional)
+.PP
+Create a \fIusage\fP script that will print out instructions on how to use the image.
+
+.SS Make the scripts executable
+.PP
+Make sure that all of the scripts are executable by running *chmod +x s2i/bin/**
+
+.SS Create the builder image
+.PP
+The following command will create a builder image named rimolive/r\-36\-centos7 based on the Dockerfile that was created previously.
+
+.PP
+.RS
+
+.nf
+docker build \-t rimolive/r\-36\-centos7 .
+
+.fi
+.RE
+
+.PP
+The builder image can also be created by using the \fImake\fP command since a \fIMakefile\fP is included.
+
+.PP
+Once the image has finished building, the command \fIs2i usage rimolive/r\-36\-centos7\fP will print out the help info that was defined in the \fIusage\fP script.
+
+.SS Testing the builder image
+.PP
+The builder image can be tested using the following commands:
+
+.PP
+.RS
+
+.nf
+docker build \-t rimolive/r\-36\-centos7\-candidate .
+IMAGE\_NAME=rimolive/r\-36\-centos7\-candidate test/run
+
+.fi
+.RE
+
+.PP
+The builder image can also be tested by using the \fImake test\fP command since a \fIMakefile\fP is included.
+
+.SS Creating the application image
+.PP
+The application image combines the builder image with your applications source code, which is served using whatever application is installed via the \fIDockerfile\fP, compiled using the \fIassemble\fP script, and run using the \fIrun\fP script.
+The following command will create the application image:
+
+.PP
+.RS
+
+.nf
+s2i build test/test\-app rimolive/r\-36\-centos7 rimolive/r\-36\-centos7\-app
+\-\-\-> Building and installing application from source...
+
+.fi
+.RE
+
+.PP
+Using the logic defined in the \fIassemble\fP script, s2i will now create an application image using the builder image as a base and including the source code from the test/test\-app directory.
+
+.SS Running the application image
+.PP
+Running the application image is as simple as invoking the docker run command:
+
+.PP
+.RS
+
+.nf
+docker run \-d \-p 8080:8080 rimolive/r\-36\-centos7\-app
+
+.fi
+.RE
+
+.PP
+The application, which consists of a simple static web page, should now be accessible at  http://localhost:8080
+\[la]http://localhost:8080\[ra]\&.
+
+.SS Using the saved artifacts script
+.PP
+Rebuilding the application using the saved artifacts can be accomplished using the following command:
+
+.PP
+.RS
+
+.nf
+s2i build \-\-incremental=true test/test\-app nginx\-centos7 nginx\-app
+\-\-\-> Restoring build artifacts...
+\-\-\-> Building and installing application from source...
+
+.fi
+.RE
+
+.PP
+This will run the \fIsave\-artifacts\fP script which includes the custom code to backup the currently running application source, rebuild the application image, and then re\-deploy the previously saved source using the \fIassemble\fP script.

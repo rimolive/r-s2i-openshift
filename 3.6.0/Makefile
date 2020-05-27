@@ -1,5 +1,5 @@
 
-IMAGE_NAME = rimolive/r-343-centos7
+IMAGE_NAME = rimolive/r-36-centos7
 
 .PHONY: build
 build:

@@ -25,7 +25,7 @@ LABEL summary="$SUMMARY" \
       maintainer="Ricardo M. Oliveira <rmartine@redhat.com>"
 
 RUN yum install -y epel-release && \
-    yum install -y R v8314-v8-devel gdal-devel proj-devel proj-nad proj-epsg  && \
+    yum install -y R-3.4.3 v8314-v8-devel gdal-devel proj-devel proj-nad proj-epsg  && \
     yum clean all && \
     rm -rf /var/cache/yum && \
     echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /usr/lib64/R/library/base/R/Rprofile

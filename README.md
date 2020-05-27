@@ -16,6 +16,7 @@ Versions
 R versions currently provided are:
 * [r-3.4](3.4.3)
 * [r-3.5](3.5.0)
+* [r-3.6](3.6.0)
 
 CentOS versions currently supported are:
 * CentOS7
@@ -29,7 +30,7 @@ To build a R image, read the following instructions:
     This image is available on DockerHub. To download it run:
 
     ```
-    $ docker pull rimolive/r-34-centos7
+    $ docker pull rimolive/r-36-centos7
     ```
 
     To build a R image from scratch run:
@@ -49,6 +50,8 @@ see [usage documentation](3.4.3/README.md).
 For information about usage of Dockerfile for R 3.5.0,
 see [usage documentation](3.5.0/README.md).
 
+For information about usage of Dockerfile for R 3.6.0,
+see [usage documentation](3.6.0/README.md).
 
 Test
 ---------------------

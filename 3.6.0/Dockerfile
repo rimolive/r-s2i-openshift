@@ -1,12 +1,12 @@
     
-# rimolive/r-35d-centos7
+# rimolive/r-36-centos7
 FROM centos/s2i-base-centos7
 
 MAINTAINER Ricardo M. Oliveira <rmartine@redhat.com>
 
 EXPOSE 8080
 
-ENV R_VERSION=3.5.0d \
+ENV R_VERSION=3.6.0 \
     LC_ALL=en_US.UTF8 \
     LANG=en_US.UTF8
 
@@ -16,16 +16,16 @@ ENV SUMMARY="" \
 LABEL summary="$SUMMARY" \
       description="$DESCRIPTION" \
       io.k8s.description="$DESCRIPTION" \
-      io.k8s.display-name="R 3.5.0" \
+      io.k8s.display-name="R 3.6.0" \
       io.openshift.expose-services="8080:http" \
-      io.openshift.tags="builder,r,r35" \
-      name="rimolive/r-35-centos7" \
-      version="3.5.0" \
+      io.openshift.tags="builder,r,r36" \
+      name="rimolive/r-36-centos7" \
+      version="3.6.0" \
       release="1" \
       maintainer="Ricardo M. Oliveira <rmartine@redhat.com>"
 
 RUN yum install -y epel-release && \
-    yum install -y R-3.5.0 v8314-v8-devel gdal-devel proj-devel proj-nad proj-epsg  && \
+    yum install -y R-3.6.0 v8314-v8-devel gdal-devel proj-devel proj-nad proj-epsg  && \
     yum clean all && \
     rm -rf /var/cache/yum && \
     echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /usr/lib64/R/library/base/R/Rprofile
